@@ -14,7 +14,105 @@ class Timeout(Exception):
     pass
 
 
-def custom_score(game, player):
+def custom_score(game, player, mode = "lmlb"):
+    """Calculate the heuristic value of a game state from the point of view
+    of the given player.
+
+    Note: this function should be called from within a Player instance as
+    `self.score()` -- you should not need to call this function directly.
+
+    Parameters
+    ----------
+    game : `isolation.Board`
+        An instance of `isolation.Board` encoding the current state of the
+        game (e.g., player locations and blocked cells).
+
+    player : object
+        A player instance in the current game (i.e., an object corresponding to
+        one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
+    Returns
+    -------
+    float
+        The heuristic value of the current game state to the specified player.
+    """
+
+    if mode == "lmlb":
+        return custom_score_legal_moves_left_balance(game, player)
+    elif mode == "ds":
+        return custom_score_dominating_space(game, player)
+    elif mode == "schadenfreude":
+        return custom_score_schadenfreude(game, player)
+
+def custom_score_dominating_space(game, player):
+    '''
+    Calculating the score based on the relative dominance of the current
+    player with respect to the available space.
+
+    Here the current players remaining moves are compared to remaining blank
+    spaces. Strictly speaking this is an apples to oranges comparison, because
+    not all spaces may be reachable given the movement pattern - two moves in
+    one direction and one move in another - but this is just one of many
+    heuristics and could be enhanced by changing to a more exact method, when
+    only five spaces are remaining.
+
+    This method ignores the opponent's position. It could be extended to run
+    this for the opponent as well and then express it as a balance or ratio.
+
+    A positive value indicates a dominace of the current player.
+    '''
+
+    game.get_blank_spaces
+
+    no_of_moves_left = float(len(game.get_legal_moves(player)))
+    space_left = float(len(game.get_blank_spaces()))
+    dominance = no_of_moves_left / space_left
+
+    print("dominance", dominance, "moves", no_of_moves_left, "space", space_left)
+
+    return dominance
+
+def custom_score_schadenfreude(game, player):
+    '''
+    Calculating the score by putting an emphasis on limiting the other player's
+    inability to move.
+
+    The current implementation is laser sharp focused on the opponent only.
+    A more balanced implementation could take the current players possible moves
+    into account as well. Maybe: -opponent_moves*2+own_moves
+    '''
+
+    opponent = game.get_opponent(player)
+    no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
+
+    print("no of opponents moves left: ", -no_of_opponents_moves_left)
+
+    return -no_of_opponents_moves_left
+
+def custom_score_legal_moves_left_balance(game, player):
+    '''
+    Calculating the score based on the balance between both player's remaining moves.
+    If the player under observation has more moves left, then the resulting value should
+    be positive, zero if both are equal, and negative otherwise.
+
+    This mechanism is easy to understand and not computational expensive.
+    However it needs to collect the remaining moves of **both** players.
+
+    '''
+
+    opponent = game.get_opponent(player)
+
+    no_of_moves_left = float(len(game.get_legal_moves(player)))
+    print(game.get_legal_moves(player)) # FIXME
+    no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
+    print(game.get_legal_moves(opponent)) # FIXME
+
+    print(no_of_moves_left, no_of_opponents_moves_left) # FIXME
+
+    return no_of_moves_left - no_of_opponents_moves_left
+
+
+def custom_score_template(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
 
@@ -39,7 +137,6 @@ def custom_score(game, player):
 
     # TODO: finish this function!
     raise NotImplementedError
-
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
