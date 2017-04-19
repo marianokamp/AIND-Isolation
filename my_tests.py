@@ -49,7 +49,7 @@ class TestIsolation(unittest.TestCase):
 
         print(game.to_string())
         score = game_agent.custom_score(game, game.active_player, "lmlb")
-        assert(score == -2)
+        assert(score == -1)
 
     def test_heuristics_ds(self):
 
@@ -57,7 +57,8 @@ class TestIsolation(unittest.TestCase):
 
         print(game.to_string())
         score = game_agent.custom_score(game, game.active_player, "ds")
-        assert(score == -2)
+        assert(score > 0.05)
+        assert(score < 0.06)
 
     def test_heuristics_schadenfreude(self):
 
@@ -65,7 +66,7 @@ class TestIsolation(unittest.TestCase):
 
         print(game.to_string())
         score = game_agent.custom_score(game, game.active_player, "schadenfreude")
-        assert(score == -2)
+        assert(score == -3)
 
 if __name__ == '__main__':
     unittest.main()
