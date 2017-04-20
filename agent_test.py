@@ -281,7 +281,7 @@ class Project1Test(unittest.TestCase):
                              "branch being searched."))
 
     @timeout(TIMEOUT)
-    @unittest.skip("Skip alphabeta test.")
+    #@unittest.skip("Skip alphabeta test.")
     def test_alphabeta_interface(self):
         """Test CustomPlayer.alphabeta interface with simple input """
         h, w = 9, 9  # board size
@@ -429,7 +429,7 @@ class Project1Test(unittest.TestCase):
                 method, test_depth, expected_moves[idx // 2], move))
 
     @timeout(TIMEOUT)
-    @unittest.skip("Skip alpha-beta test.")  # Uncomment this line to skip test
+    #@unittest.skip("Skip alpha-beta test.")  # Uncomment this line to skip test
     def test_alphabeta(self):
         """Test CustomPlayer.alphabeta
 

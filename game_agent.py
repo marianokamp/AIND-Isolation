@@ -9,13 +9,13 @@ relative strength using tournament.py and include the results in your report.
 import random
 
 DEBUG = False
-def debug(str = ""):
-    if DEBUG: print(str)
+def debug(*str):
+    if DEBUG:
+        print(*str)
 
 class Timeout(Exception):
     """Subclass base exception for code clarity."""
     pass
-
 
 def custom_score(game, player, mode = "lmlb"):
     """Calculate the heuristic value of a game state from the point of view
@@ -115,36 +115,9 @@ def custom_score_legal_moves_left_balance(game, player):
         print(game.get_legal_moves(opponent))
 
     if DEBUG:
-        print(no_of_moves_left, no_of_opponents_moves_left) 
+        print(no_of_moves_left, no_of_opponents_moves_left)
 
     return no_of_moves_left - no_of_opponents_moves_left
-
-
-def custom_score_template(game, player):
-    """Calculate the heuristic value of a game state from the point of view
-    of the given player.
-
-    Note: this function should be called from within a Player instance as
-    `self.score()` -- you should not need to call this function directly.
-
-    Parameters
-    ----------
-    game : `isolation.Board`
-        An instance of `isolation.Board` encoding the current state of the
-        game (e.g., player locations and blocked cells).
-
-    player : object
-        A player instance in the current game (i.e., an object corresponding to
-        one of the player objects `game.__player_1__` or `game.__player_2__`.)
-
-    Returns
-    -------
-    float
-        The heuristic value of the current game state to the specified player.
-    """
-
-    # TODO: finish this function!
-    raise NotImplementedError
 
 class CustomPlayer:
     """Game-playing agent that chooses a move using your evaluation function
@@ -252,10 +225,9 @@ class CustomPlayer:
             # --- Iterative
             if self.iterative:
 
-
                 current_depth = 1 # starting depth
                 while self.time_left() > self.TIMER_THRESHOLD:
-                    print("current_depth", current_depth)
+                    debug("current_depth", current_depth)
                     best = max(best, eval_fun(game, current_depth))
 
                     # Found a solution?
@@ -267,7 +239,7 @@ class CustomPlayer:
 
             # --- One-Shot
             else:
-                print("not iterative")
+                debug("not iterative")
                 best = max(best, eval_fun(game, self.search_depth))
 
         except Timeout:
@@ -320,7 +292,7 @@ class CustomPlayer:
                 evaluation function directly.
         """
 
-        # provide margin for debug output reflecting the nested evaluation
+        # MK: provide margin for debug output reflecting the nested evaluation
 
         margin = ""
         if DEBUG:
@@ -339,9 +311,9 @@ class CustomPlayer:
 
         v = (float("-inf") if maximizing_player else float("+inf"), (1,1))
 
-        # terminal state?
+        # MK: terminal state?
         if not legal_moves:
-            # return the utility of the terminal node
+            # MK: return the utility of the terminal node
             debug(margin + "terminal state, no legal moves left (%d) or depth (%d) > search_depth (%d)" % (len(legal_moves), depth, self.search_depth))
 
             v = (game.utility(self), (-1,-1))
@@ -354,7 +326,7 @@ class CustomPlayer:
 
         else:
             debug(margin + "non-terminal state, depth: %d %d legal moves." % (depth, len(legal_moves)))
-            # iterate over the moves / children and look for
+            # MK: iterate over the moves / children and look for
             # the min/max value
 
             for move in legal_moves:
@@ -413,5 +385,87 @@ class CustomPlayer:
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        # check if terminal node
+        # if that is the case use the utility function
+          # initialize v to neg infinity (max case)
+          #
+
+        margin = ""
+        if DEBUG:
+            for x in range(1, 1+self.search_depth-depth):
+                margin += "   "
+        debug(margin+ "============================================================")
+        debug(margin+ "abp called with depth: %d alpha: %f beta: %f" %(depth, alpha, beta))
+        debug(margin+ "============================================================")
+
+        debug("\n"+margin+"abp depth: %d max: %s" % (depth, str(maximizing_player)))
+        debug(margin + "self.search_depth:"+str(self.search_depth)+" depth: "+ str(depth))
+
+        legal_moves = game.get_legal_moves()
+
+        debug(margin + "legal moves length:"+str(len(legal_moves)))
+
+        v = (float("-inf") if maximizing_player else float("+inf"), (1,1))
+
+        # terminal state?
+        if not legal_moves:
+            # return the utility of the terminal node
+            debug(margin + "terminal state, no legal moves left (%d) or depth (%d) > search_depth (%d)" % (len(legal_moves), depth, self.search_depth))
+
+            v = (game.utility(self), (-1,-1))
+            debug(margin + "A returning score: %s next_move: %s" % (v[0], v[1]))
+
+        elif depth == 0:
+            v = (self.score(game, self), (-1, -1))
+            debug(margin + "B returning score: %s next_move: %s" % (v[0], v[1]))
+
+        else:
+            debug(margin + "non-terminal state, depth: %d %d legal moves." % (depth, len(legal_moves)))
+            # iterate over the moves / children and look for
+            # the min/max value
+
+            debug(margin + "is Maximizing:", maximizing_player)
+
+            for move in legal_moves:
+                debug(margin + "legal move ", move)
+                new_game = game.forecast_move(move)
+                new_v = (self.alphabeta(new_game, depth - 1, alpha, beta, not maximizing_player)[0], move)
+
+                evaluated_score, _ = new_v
+                debug(margin + "evaluated_score:", evaluated_score, "score:", v[0])
+                debug()
+
+                # --- MAX
+                if maximizing_player:
+                    if evaluated_score >= beta:
+                        debug(margin + "pruning")
+                        #continue # MK: pruning as min would not pick this move
+                        return new_v
+
+                    if evaluated_score > alpha:
+                        debug(margin + "alpha updated")
+                        alpha = evaluated_score
+
+                    if evaluated_score > v[0]:
+                        v = new_v
+
+
+                # --- MIN
+                else:
+                    if evaluated_score <= alpha:
+                        debug(margin + "pruning")
+                        #continue # MK: pruning here as well
+                        return new_v
+
+                    if evaluated_score < beta:
+                        debug(margin + "beta updated")
+                        beta = evaluated_score
+
+                    if evaluated_score < v[0]:
+                        v = new_v
+
+                #best = max if maximizing_player else min
+                #v = best(v, new_v)
+
+                debug(margin + "C returning score: %s next_move: %s" % (v[0], v[1]))
+        return v
