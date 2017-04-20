@@ -8,6 +8,9 @@ relative strength using tournament.py and include the results in your report.
 """
 import random
 
+DEBUG = False
+def debug(str = ""):
+    if DEBUG: print(str)
 
 class Timeout(Exception):
     """Subclass base exception for code clarity."""
@@ -266,11 +269,59 @@ class CustomPlayer:
                 to pass the project unit tests; you cannot call any other
                 evaluation function directly.
         """
+
+        # provide margin for debug output reflecting the nested evaluation
+        if DEBUG:
+            margin = ""
+            for x in range(1, 1+self.search_depth-depth):
+                margin += "   "
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise Timeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+        debug("\n\n"+margin+"minimax depth: %d max: %s" % (depth, str(maximizing_player)))
+        debug(margin + "self.search_depth:"+str(self.search_depth)+" depth: "+ str(depth))
+
+
+        legal_moves = game.get_legal_moves()
+        debug(margin + "legal moves length:"+str(len(legal_moves)))
+
+        v = (float("-inf") if maximizing_player else float("+inf"), (1,1))
+
+        # terminal state?
+        if not legal_moves:
+            # return the utility of the terminal node
+            debug(margin + "terminal state, no legal moves left (%d) or depth (%d) > search_depth (%d)" % (len(legal_moves), depth, self.search_depth))
+
+            # update utility, leave -1, -1
+            v = (game.utility(self), (-1,-1))
+            debug(margin + "A returning score: %s next_move: %s" % (v[0], v[1]))
+
+        elif depth == 0:
+            v = (self.score(game, self), (-1, -1))
+
+            debug(margin + "B returning score: %s next_move: %s" % (v[0], v[1]))
+
+        else:
+            debug(margin + "non-terminal state, depth: %d %d legal moves." % (depth, len(legal_moves)))
+            # iterate over the moves / children and look for
+            # the min/max value
+
+            for move in legal_moves:
+                debug(margin + "legal move "+str(move))
+                new_game = game.forecast_move(move)
+                new_v = (self.minimax(new_game, depth - 1, not maximizing_player)[0], move)
+
+                debug()
+
+                best = max if maximizing_player else min
+                v = best(v, new_v)
+
+                debug(margin + "C returning score: %s next_move: %s" % (v[0], v[1]))
+        return v
+
+
+
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf"), maximizing_player=True):
         """Implement minimax search with alpha-beta pruning as described in the
