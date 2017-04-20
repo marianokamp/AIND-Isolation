@@ -71,7 +71,8 @@ def custom_score_dominating_space(game, player):
     space_left = float(len(game.get_blank_spaces()))
     dominance = no_of_moves_left / space_left
 
-    print("dominance", dominance, "moves", no_of_moves_left, "space", space_left)
+    if DEBUG:
+        print("dominance", dominance, "moves", no_of_moves_left, "space", space_left)
 
     return dominance
 
@@ -88,7 +89,8 @@ def custom_score_schadenfreude(game, player):
     opponent = game.get_opponent(player)
     no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
 
-    print("no of opponents moves left: ", -no_of_opponents_moves_left)
+    if DEBUG:
+        print("no of opponents moves left: ", -no_of_opponents_moves_left)
 
     return -no_of_opponents_moves_left
 
@@ -106,11 +108,14 @@ def custom_score_legal_moves_left_balance(game, player):
     opponent = game.get_opponent(player)
 
     no_of_moves_left = float(len(game.get_legal_moves(player)))
-    print(game.get_legal_moves(player)) # FIXME
+    if DEBUG:
+        print(game.get_legal_moves(player))
     no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
-    print(game.get_legal_moves(opponent)) # FIXME
+    if DEBUG:
+        print(game.get_legal_moves(opponent))
 
-    print(no_of_moves_left, no_of_opponents_moves_left) # FIXME
+    if DEBUG:
+        print(no_of_moves_left, no_of_opponents_moves_left) 
 
     return no_of_moves_left - no_of_opponents_moves_left
 
@@ -217,26 +222,71 @@ class CustomPlayer:
         """
 
         self.time_left = time_left
-
-        # TODO: finish this function!
-
         # Perform any required initializations, including selecting an initial
         # move from the game board (i.e., an opening book), or returning
         # immediately if there are no legal moves
+
+        # MK: This should not happen, bit if we get called without any legal
+        # moves to evaluate, then the only logical consequence is to return
+        # (-1, -1) as no move is possible
+        if not legal_moves:
+            return (-1, -1)
+
+        # MK: Pick an arbitrary move, to have something in case of a timeout
+        # Otherwise ignoring legal_moves as they are handled in minimax
+        # and ab-pruning.
+
+        best = (float('-inf'), legal_moves[0])
+
+        if self.method == 'minimax':
+            eval_fun = self.minimax
+        else:
+            eval_fun = self.alphabeta
 
         try:
             # The search method call (alpha beta or minimax) should happen in
             # here in order to avoid timeout. The try/except block will
             # automatically catch the exception raised by the search method
             # when the timer gets close to expiring
-            pass
+
+            # --- Iterative
+            if self.iterative:
+
+
+                current_depth = 1 # starting depth
+                while self.time_left() > self.TIMER_THRESHOLD:
+                    print("current_depth", current_depth)
+                    best = max(best, eval_fun(game, current_depth))
+
+                    # Found a solution?
+                    if best[0] in [float("inf"), float("-inf")]:
+                        break
+
+                    current_depth += 1
+                    # FIXME How about some re-ordering here?
+
+            # --- One-Shot
+            else:
+                print("not iterative")
+                best = max(best, eval_fun(game, self.search_depth))
 
         except Timeout:
             # Handle any actions required at timeout, if necessary
-            pass
+
+            # MK: We do not do any explicit checking for a timeout in this
+            # method, but rely on the actual work being done in minimax/ab
+            # pruning, and we do the time checking there. This allows for more
+            # fine grained control, then doing it remotely from here.
+
+            # MK: In case of iterative deepening we do however take time into
+            # account on this coarse grained level, before starting a new,
+            # deeper search iteration. But even here the cutoff is handled on
+            # the work level inside of minimax and ab-pruning.
+
+            pass # MK: Nothing to do here, will return best_move (best[1]) below
 
         # Return the best move from the last completed search iteration
-        raise NotImplementedError
+        return best[1]
 
     def minimax(self, game, depth, maximizing_player=True):
         """Implement the minimax search algorithm as described in the lectures.
@@ -271,8 +321,9 @@ class CustomPlayer:
         """
 
         # provide margin for debug output reflecting the nested evaluation
+
+        margin = ""
         if DEBUG:
-            margin = ""
             for x in range(1, 1+self.search_depth-depth):
                 margin += "   "
 
@@ -293,7 +344,6 @@ class CustomPlayer:
             # return the utility of the terminal node
             debug(margin + "terminal state, no legal moves left (%d) or depth (%d) > search_depth (%d)" % (len(legal_moves), depth, self.search_depth))
 
-            # update utility, leave -1, -1
             v = (game.utility(self), (-1,-1))
             debug(margin + "A returning score: %s next_move: %s" % (v[0], v[1]))
 
@@ -319,7 +369,6 @@ class CustomPlayer:
 
                 debug(margin + "C returning score: %s next_move: %s" % (v[0], v[1]))
         return v
-
 
 
 
