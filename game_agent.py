@@ -17,7 +17,7 @@ class Timeout(Exception):
     """Subclass base exception for code clarity."""
     pass
 
-def custom_score(game, player, mode = "lmlb"):
+def custom_score(game, player, mode = "schadenfreude"):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
 
@@ -46,6 +46,8 @@ def custom_score(game, player, mode = "lmlb"):
         return custom_score_dominating_space(game, player)
     elif mode == "schadenfreude":
         return custom_score_schadenfreude(game, player)
+    elif mode == "mixed_centrality":
+        return custom_score_mixed_centrality(game, player)
 
 def custom_score_dominating_space(game, player):
     '''
@@ -64,8 +66,11 @@ def custom_score_dominating_space(game, player):
 
     A positive value indicates a dominace of the current player.
     '''
+    if game.is_loser(player):
+        return float("-inf")
 
-    game.get_blank_spaces
+    if game.is_winner(player):
+        return float("inf")
 
     no_of_moves_left = float(len(game.get_legal_moves(player)))
     space_left = float(len(game.get_blank_spaces()))
@@ -86,6 +91,12 @@ def custom_score_schadenfreude(game, player):
     into account as well. Maybe: -opponent_moves*2+own_moves
     '''
 
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
     opponent = game.get_opponent(player)
     no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
 
@@ -93,6 +104,78 @@ def custom_score_schadenfreude(game, player):
         print("no of opponents moves left: ", -no_of_opponents_moves_left)
 
     return -no_of_opponents_moves_left
+
+def custom_score_dominating_moves(game, player):
+    '''
+    Expressing the balance between the abilities to move.
+    '''
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    opponent = game.get_opponent(player)
+
+    no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
+    no_of_moves_left = float(len(game.get_legal_moves(player)))
+    moves_score = float(1+no_of_moves_left)/(1+(no_of_moves_left+no_of_opponents_moves_left*3)) # 3 = 82.86
+
+    return moves_score
+
+def custom_score_mixed_centrality(game, player):
+    '''
+    Given that now the actual movement patterns are based on a rook and no
+    longer on a queen, the impact of a barrier is not as big anymore. Also
+    judging the dominance in space is much harder to calculate efficiently as it
+    would need to include trying out the legal moves.
+
+    However staying away from the edges should be a good heuristic. This
+    combined with the balance of moves the player has left vs the opponent has
+    left (with a small factor added to favor boxing the opponent in), should
+    hopefully do well in the tournament. We wil see.
+    '''
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
+
+    opponent = game.get_opponent(player)
+
+
+    no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
+    no_of_moves_left = float(len(game.get_legal_moves(player)))
+    moves_score = float(1+no_of_moves_left)/(1+(no_of_moves_left+no_of_opponents_moves_left*3)) # 3 = 82.86
+
+    # 1   = 79%
+    # 2   = 82%  (81.43%) 82.86%
+    # 3   = 79%
+    # **2 = 81.43%
+    # **3 = 75
+
+    if (game.move_count < 5):
+        # 10 81.79
+        # 7 80.36
+        # 5 86.07
+        # 4
+        # 2 75.71
+
+        row, col = game.get_player_location(player)
+        row -= game.height / 2
+        col -= game.width / 2
+        row = row**2
+        col = row**2
+        centrality_raw_score = row*col
+        centrality_max_score = (game.height ** 2) * (game.width ** 2)
+        centrality_score = 1-(centrality_raw_score / centrality_max_score)
+
+        # *(1/game.move_count+1) Decaying the weight of centrality
+
+        return centrality_score + moves_score*2
+
+    return  moves_score*2
 
 def custom_score_legal_moves_left_balance(game, player):
     '''
@@ -102,20 +185,18 @@ def custom_score_legal_moves_left_balance(game, player):
 
     This mechanism is easy to understand and not computational expensive.
     However it needs to collect the remaining moves of **both** players.
-
     '''
+
+    if game.is_loser(player):
+        return float("-inf")
+
+    if game.is_winner(player):
+        return float("inf")
 
     opponent = game.get_opponent(player)
 
     no_of_moves_left = float(len(game.get_legal_moves(player)))
-    if DEBUG:
-        print(game.get_legal_moves(player))
     no_of_opponents_moves_left = float(len(game.get_legal_moves(opponent)))
-    if DEBUG:
-        print(game.get_legal_moves(opponent))
-
-    if DEBUG:
-        print(no_of_moves_left, no_of_opponents_moves_left)
 
     return no_of_moves_left - no_of_opponents_moves_left
 

@@ -32,9 +32,17 @@ from sample_players import open_move_score
 from sample_players import improved_score
 from game_agent import CustomPlayer
 from game_agent import custom_score
+from game_agent import custom_score_dominating_space
+from game_agent import custom_score_dominating_moves
+from game_agent import custom_score_schadenfreude
+from game_agent import custom_score_legal_moves_left_balance
+from game_agent import custom_score_mixed_centrality
 
-NUM_MATCHES = 5  # number of matches against each opponent
-TIME_LIMIT = 150  # number of milliseconds before timeout
+
+
+
+NUM_MATCHES = 20  # number of matches against each opponent # Was 5, Then 20
+TIME_LIMIT = 500  # number of milliseconds before timeout # Was 150
 
 TIMEOUT_WARNING = "One or more agents lost a match this round due to " + \
                   "timeout. The get_move() function must return before " + \
@@ -55,7 +63,6 @@ same opponents.
 """
 
 Agent = namedtuple("Agent", ["player", "name"])
-
 
 def play_match(player1, player2):
     """
@@ -140,8 +147,8 @@ def main():
     HEURISTICS = [("Null", null_score),
                   ("Open", open_move_score),
                   ("Improved", improved_score)]
-    AB_ARGS = {"search_depth": 5, "method": 'alphabeta', "iterative": False}
-    MM_ARGS = {"search_depth": 3, "method": 'minimax', "iterative": False}
+    AB_ARGS = {"search_depth": 5, "method": 'alphabeta', "iterative": False} # 5
+    MM_ARGS = {"search_depth": 3, "method": 'minimax', "iterative": False} # 3
     CUSTOM_ARGS = {"method": 'alphabeta', 'iterative': True}
 
     # Create a collection of CPU agents using fixed-depth minimax or alpha beta
@@ -160,23 +167,70 @@ def main():
     # systems; i.e., the performance of the student agent is considered
     # relative to the performance of the ID_Improved agent to account for
     # faster or slower computers.
-    test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved"),
-                   Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
+    #test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved"),
+    #               Agent(CustomPlayer(score_fn=custom_score, **CUSTOM_ARGS), "Student")]
+#    test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved"),
+#                   Agent(CustomPlayer(score_fn=custom_score_mixed_centrality, **CUSTOM_ARGS), "mixed_centrality")]
 
-    print(DESCRIPTION)
-    for agentUT in test_agents:
-        print("")
-        print("*************************")
-        print("{:^25}".format("Evaluating: " + agentUT.name))
-        print("*************************")
+# FIXME
 
-        agents = random_agents + mm_agents + ab_agents + [agentUT]
-        win_ratio = play_round(agents, NUM_MATCHES)
 
-        print("\n\nResults:")
-        print("----------")
-        print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+    if True:
+        test_agents = [Agent(CustomPlayer(score_fn=improved_score, **CUSTOM_ARGS), "ID_Improved"),
+                    Agent(CustomPlayer(score_fn=custom_score_legal_moves_left_balance, **CUSTOM_ARGS), "Legal Moves\nLeft Balance"),
+                    Agent(CustomPlayer(score_fn=custom_score_dominating_space, **CUSTOM_ARGS), "Dominating\nSpace"),
+                    Agent(CustomPlayer(score_fn=custom_score_dominating_moves, **CUSTOM_ARGS), "Dominating\nMoves"),
+                    Agent(CustomPlayer(score_fn=custom_score_schadenfreude, **CUSTOM_ARGS), "Schadenfreude"),
+                    Agent(CustomPlayer(score_fn=custom_score_mixed_centrality, **CUSTOM_ARGS), "Mixed \nCentrality")]
 
+    results_prepared = {}
+
+    for run in range(0,3):
+        print(DESCRIPTION)
+
+        results = []
+        for agentUT in test_agents:
+            print("")
+            print("*************************")
+            print("{:^25}".format("Evaluating: " + agentUT.name))
+            print("*************************")
+
+            agents = random_agents + mm_agents + ab_agents + [agentUT]
+            win_ratio = play_round(agents, NUM_MATCHES)
+            results.append((win_ratio, agentUT.name))
+
+            print("\n\nResults:")
+            print("----------")
+            print("{!s:<15}{:>10.2f}%".format(agentUT.name, win_ratio))
+
+        print("All Results:")
+
+        for index, (score, name) in enumerate(results):
+            if name == "ID_Improved":
+                break
+
+        assert("ID_Improved" == results[index][1])
+        baseline_score = results[index][0]
+        print("baseline_score",baseline_score)
+
+        del results[index]
+
+        #results_prepared = [[name, score-baseline_score] for (score, name) in sorted(results)]
+        for (score, name) in results:
+            results_prepared[name] = results_prepared.get(name, []) + [score-baseline_score]
+
+        #labels, ys = zip(*results_prepared)
+
+    import visualize
+    import numpy as np
+    print("results_prepared", results_prepared)
+    visualize.visualize_as_bar(results_prepared, "Absolute Differences to Baseline")
+
+    # Create table
+    averaged_results = {}
+    for key in results_prepared:
+        averaged_results[key] = np.mean(results_prepared[key])
+    print("averaged_results", averaged_results)
 
 if __name__ == "__main__":
     main()
