@@ -1,0 +1,493 @@
+This script evaluates the performance of the custom heuristic function by
+comparing the strength of an agent using iterative deepening (ID) search with
+alpha-beta pruning against the strength rating of agents using other heuristic
+functions.  The `ID_Improved` agent provides a baseline by measuring the
+performance of a basic agent using Iterative Deepening and the "improved"
+heuristic (from lecture) on your hardware.  The `Student` agent then measures
+the performance of Iterative Deepening and the custom heuristic against the
+same opponents.
+
+
+*************************
+ Evaluating: ID_Improved
+*************************
+
+Playing Matches:
+----------
+tournament.py:107: UserWarning: One or more agents lost a match this round due to timeout. The get_move() function must return before time_left() reaches 0 ms. You will need to leave some time for the function to return, and may need to increase this margin to avoid timeouts during  tournament play.
+  warnings.warn(TIMEOUT_WARNING)
+  Match 1: ID_Improved vs   Random    	Result: 19 to 1
+  Match 2: ID_Improved vs   MM_Null   	Result: 19 to 1
+  Match 3: ID_Improved vs   MM_Open   	Result: 17 to 3
+  Match 4: ID_Improved vs MM_Improved 	Result: 19 to 1
+  Match 5: ID_Improved vs   AB_Null   	Result: 17 to 3
+  Match 6: ID_Improved vs   AB_Open   	Result: 15 to 5
+  Match 7: ID_Improved vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+ID_Improved         84.29%
+
+*************************
+Evaluating: Legal Moves
+Left Balance
+*************************
+
+Playing Matches:
+----------
+  Match 1: Legal Moves
+Left Balance vs   Random    	Result: 20 to 0
+  Match 2: Legal Moves
+Left Balance vs   MM_Null   	Result: 20 to 0
+  Match 3: Legal Moves
+Left Balance vs   MM_Open   	Result: 17 to 3
+  Match 4: Legal Moves
+Left Balance vs MM_Improved 	Result: 17 to 3
+  Match 5: Legal Moves
+Left Balance vs   AB_Null   	Result: 18 to 2
+  Match 6: Legal Moves
+Left Balance vs   AB_Open   	Result: 13 to 7
+  Match 7: Legal Moves
+Left Balance vs AB_Improved 	Result: 15 to 5
+
+
+Results:
+----------
+Legal Moves
+Left Balance     85.71%
+
+*************************
+Evaluating: Dominating
+Space
+*************************
+
+Playing Matches:
+----------
+  Match 1: Dominating
+Space vs   Random    	Result: 19 to 1
+  Match 2: Dominating
+Space vs   MM_Null   	Result: 20 to 0
+  Match 3: Dominating
+Space vs   MM_Open   	Result: 16 to 4
+  Match 4: Dominating
+Space vs MM_Improved 	Result: 13 to 7
+  Match 5: Dominating
+Space vs   AB_Null   	Result: 16 to 4
+  Match 6: Dominating
+Space vs   AB_Open   	Result: 13 to 7
+  Match 7: Dominating
+Space vs AB_Improved 	Result: 11 to 9
+
+
+Results:
+----------
+Dominating
+Space     77.14%
+
+*************************
+Evaluating: Dominating
+Moves
+*************************
+
+Playing Matches:
+----------
+  Match 1: Dominating
+Moves vs   Random    	Result: 19 to 1
+  Match 2: Dominating
+Moves vs   MM_Null   	Result: 19 to 1
+  Match 3: Dominating
+Moves vs   MM_Open   	Result: 16 to 4
+  Match 4: Dominating
+Moves vs MM_Improved 	Result: 17 to 3
+  Match 5: Dominating
+Moves vs   AB_Null   	Result: 18 to 2
+  Match 6: Dominating
+Moves vs   AB_Open   	Result: 16 to 4
+  Match 7: Dominating
+Moves vs AB_Improved 	Result: 17 to 3
+
+
+Results:
+----------
+Dominating
+Moves     87.14%
+
+*************************
+Evaluating: Schadenfreude
+*************************
+
+Playing Matches:
+----------
+  Match 1: Schadenfreude vs   Random    	Result: 18 to 2
+  Match 2: Schadenfreude vs   MM_Null   	Result: 16 to 4
+  Match 3: Schadenfreude vs   MM_Open   	Result: 12 to 8
+  Match 4: Schadenfreude vs MM_Improved 	Result: 17 to 3
+  Match 5: Schadenfreude vs   AB_Null   	Result: 17 to 3
+  Match 6: Schadenfreude vs   AB_Open   	Result: 16 to 4
+  Match 7: Schadenfreude vs AB_Improved 	Result: 14 to 6
+
+
+Results:
+----------
+Schadenfreude       78.57%
+
+*************************
+Evaluating: Mixed
+Centrality
+*************************
+
+Playing Matches:
+----------
+  Match 1: Mixed
+Centrality vs   Random    	Result: 20 to 0
+  Match 2: Mixed
+Centrality vs   MM_Null   	Result: 19 to 1
+  Match 3: Mixed
+Centrality vs   MM_Open   	Result: 17 to 3
+  Match 4: Mixed
+Centrality vs MM_Improved 	Result: 17 to 3
+  Match 5: Mixed
+Centrality vs   AB_Null   	Result: 18 to 2
+  Match 6: Mixed
+Centrality vs   AB_Open   	Result: 15 to 5
+  Match 7: Mixed
+Centrality vs AB_Improved 	Result: 13 to 7
+
+
+Results:
+----------
+Mixed
+Centrality     85.00%
+All Results:
+baseline_score 84.28571428571429
+
+This script evaluates the performance of the custom heuristic function by
+comparing the strength of an agent using iterative deepening (ID) search with
+alpha-beta pruning against the strength rating of agents using other heuristic
+functions.  The `ID_Improved` agent provides a baseline by measuring the
+performance of a basic agent using Iterative Deepening and the "improved"
+heuristic (from lecture) on your hardware.  The `Student` agent then measures
+the performance of Iterative Deepening and the custom heuristic against the
+same opponents.
+
+
+*************************
+ Evaluating: ID_Improved
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 20 to 0
+  Match 2: ID_Improved vs   MM_Null   	Result: 19 to 1
+  Match 3: ID_Improved vs   MM_Open   	Result: 17 to 3
+  Match 4: ID_Improved vs MM_Improved 	Result: 16 to 4
+  Match 5: ID_Improved vs   AB_Null   	Result: 16 to 4
+  Match 6: ID_Improved vs   AB_Open   	Result: 12 to 8
+  Match 7: ID_Improved vs AB_Improved 	Result: 15 to 5
+
+
+Results:
+----------
+ID_Improved         82.14%
+
+*************************
+Evaluating: Legal Moves
+Left Balance
+*************************
+
+Playing Matches:
+----------
+  Match 1: Legal Moves
+Left Balance vs   Random    	Result: 20 to 0
+  Match 2: Legal Moves
+Left Balance vs   MM_Null   	Result: 20 to 0
+  Match 3: Legal Moves
+Left Balance vs   MM_Open   	Result: 17 to 3
+  Match 4: Legal Moves
+Left Balance vs MM_Improved 	Result: 17 to 3
+  Match 5: Legal Moves
+Left Balance vs   AB_Null   	Result: 16 to 4
+  Match 6: Legal Moves
+Left Balance vs   AB_Open   	Result: 16 to 4
+  Match 7: Legal Moves
+Left Balance vs AB_Improved 	Result: 11 to 9
+
+
+Results:
+----------
+Legal Moves
+Left Balance     83.57%
+
+*************************
+Evaluating: Dominating
+Space
+*************************
+
+Playing Matches:
+----------
+  Match 1: Dominating
+Space vs   Random    	Result: 20 to 0
+  Match 2: Dominating
+Space vs   MM_Null   	Result: 18 to 2
+  Match 3: Dominating
+Space vs   MM_Open   	Result: 17 to 3
+  Match 4: Dominating
+Space vs MM_Improved 	Result: 18 to 2
+  Match 5: Dominating
+Space vs   AB_Null   	Result: 19 to 1
+  Match 6: Dominating
+Space vs   AB_Open   	Result: 16 to 4
+  Match 7: Dominating
+Space vs AB_Improved 	Result: 16 to 4
+
+
+Results:
+----------
+Dominating
+Space     88.57%
+
+*************************
+Evaluating: Dominating
+Moves
+*************************
+
+Playing Matches:
+----------
+  Match 1: Dominating
+Moves vs   Random    	Result: 19 to 1
+  Match 2: Dominating
+Moves vs   MM_Null   	Result: 18 to 2
+  Match 3: Dominating
+Moves vs   MM_Open   	Result: 18 to 2
+  Match 4: Dominating
+Moves vs MM_Improved 	Result: 16 to 4
+  Match 5: Dominating
+Moves vs   AB_Null   	Result: 15 to 5
+  Match 6: Dominating
+Moves vs   AB_Open   	Result: 17 to 3
+  Match 7: Dominating
+Moves vs AB_Improved 	Result: 13 to 7
+
+
+Results:
+----------
+Dominating
+Moves     82.86%
+
+*************************
+Evaluating: Schadenfreude
+*************************
+
+Playing Matches:
+----------
+  Match 1: Schadenfreude vs   Random    	Result: 18 to 2
+  Match 2: Schadenfreude vs   MM_Null   	Result: 19 to 1
+  Match 3: Schadenfreude vs   MM_Open   	Result: 18 to 2
+  Match 4: Schadenfreude vs MM_Improved 	Result: 16 to 4
+  Match 5: Schadenfreude vs   AB_Null   	Result: 17 to 3
+  Match 6: Schadenfreude vs   AB_Open   	Result: 15 to 5
+  Match 7: Schadenfreude vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+Schadenfreude       82.14%
+
+*************************
+Evaluating: Mixed
+Centrality
+*************************
+
+Playing Matches:
+----------
+  Match 1: Mixed
+Centrality vs   Random    	Result: 20 to 0
+  Match 2: Mixed
+Centrality vs   MM_Null   	Result: 20 to 0
+  Match 3: Mixed
+Centrality vs   MM_Open   	Result: 17 to 3
+  Match 4: Mixed
+Centrality vs MM_Improved 	Result: 13 to 7
+  Match 5: Mixed
+Centrality vs   AB_Null   	Result: 16 to 4
+  Match 6: Mixed
+Centrality vs   AB_Open   	Result: 15 to 5
+  Match 7: Mixed
+Centrality vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+Mixed
+Centrality     80.71%
+All Results:
+baseline_score 82.14285714285714
+
+This script evaluates the performance of the custom heuristic function by
+comparing the strength of an agent using iterative deepening (ID) search with
+alpha-beta pruning against the strength rating of agents using other heuristic
+functions.  The `ID_Improved` agent provides a baseline by measuring the
+performance of a basic agent using Iterative Deepening and the "improved"
+heuristic (from lecture) on your hardware.  The `Student` agent then measures
+the performance of Iterative Deepening and the custom heuristic against the
+same opponents.
+
+
+*************************
+ Evaluating: ID_Improved
+*************************
+
+Playing Matches:
+----------
+  Match 1: ID_Improved vs   Random    	Result: 20 to 0
+  Match 2: ID_Improved vs   MM_Null   	Result: 19 to 1
+  Match 3: ID_Improved vs   MM_Open   	Result: 18 to 2
+  Match 4: ID_Improved vs MM_Improved 	Result: 17 to 3
+  Match 5: ID_Improved vs   AB_Null   	Result: 17 to 3
+  Match 6: ID_Improved vs   AB_Open   	Result: 15 to 5
+  Match 7: ID_Improved vs AB_Improved 	Result: 15 to 5
+
+
+Results:
+----------
+ID_Improved         86.43%
+
+*************************
+Evaluating: Legal Moves
+Left Balance
+*************************
+
+Playing Matches:
+----------
+  Match 1: Legal Moves
+Left Balance vs   Random    	Result: 18 to 2
+  Match 2: Legal Moves
+Left Balance vs   MM_Null   	Result: 19 to 1
+  Match 3: Legal Moves
+Left Balance vs   MM_Open   	Result: 17 to 3
+  Match 4: Legal Moves
+Left Balance vs MM_Improved 	Result: 15 to 5
+  Match 5: Legal Moves
+Left Balance vs   AB_Null   	Result: 19 to 1
+  Match 6: Legal Moves
+Left Balance vs   AB_Open   	Result: 16 to 4
+  Match 7: Legal Moves
+Left Balance vs AB_Improved 	Result: 12 to 8
+
+
+Results:
+----------
+Legal Moves
+Left Balance     82.86%
+
+*************************
+Evaluating: Dominating
+Space
+*************************
+
+Playing Matches:
+----------
+  Match 1: Dominating
+Space vs   Random    	Result: 20 to 0
+  Match 2: Dominating
+Space vs   MM_Null   	Result: 18 to 2
+  Match 3: Dominating
+Space vs   MM_Open   	Result: 17 to 3
+  Match 4: Dominating
+Space vs MM_Improved 	Result: 16 to 4
+  Match 5: Dominating
+Space vs   AB_Null   	Result: 20 to 0
+  Match 6: Dominating
+Space vs   AB_Open   	Result: 18 to 2
+  Match 7: Dominating
+Space vs AB_Improved 	Result: 15 to 5
+
+
+Results:
+----------
+Dominating
+Space     88.57%
+
+*************************
+Evaluating: Dominating
+Moves
+*************************
+
+Playing Matches:
+----------
+  Match 1: Dominating
+Moves vs   Random    	Result: 20 to 0
+  Match 2: Dominating
+Moves vs   MM_Null   	Result: 19 to 1
+  Match 3: Dominating
+Moves vs   MM_Open   	Result: 16 to 4
+  Match 4: Dominating
+Moves vs MM_Improved 	Result: 15 to 5
+  Match 5: Dominating
+Moves vs   AB_Null   	Result: 19 to 1
+  Match 6: Dominating
+Moves vs   AB_Open   	Result: 16 to 4
+  Match 7: Dominating
+Moves vs AB_Improved 	Result: 16 to 4
+
+
+Results:
+----------
+Dominating
+Moves     86.43%
+
+*************************
+Evaluating: Schadenfreude
+*************************
+
+Playing Matches:
+----------
+  Match 1: Schadenfreude vs   Random    	Result: 18 to 2
+  Match 2: Schadenfreude vs   MM_Null   	Result: 18 to 2
+  Match 3: Schadenfreude vs   MM_Open   	Result: 13 to 7
+  Match 4: Schadenfreude vs MM_Improved 	Result: 13 to 7
+  Match 5: Schadenfreude vs   AB_Null   	Result: 14 to 6
+  Match 6: Schadenfreude vs   AB_Open   	Result: 16 to 4
+  Match 7: Schadenfreude vs AB_Improved 	Result: 16 to 4
+
+
+Results:
+----------
+Schadenfreude       77.14%
+
+*************************
+Evaluating: Mixed
+Centrality
+*************************
+
+Playing Matches:
+----------
+  Match 1: Mixed
+Centrality vs   Random    	Result: 20 to 0
+  Match 2: Mixed
+Centrality vs   MM_Null   	Result: 19 to 1
+  Match 3: Mixed
+Centrality vs   MM_Open   	Result: 20 to 0
+  Match 4: Mixed
+Centrality vs MM_Improved 	Result: 18 to 2
+  Match 5: Mixed
+Centrality vs   AB_Null   	Result: 16 to 4
+  Match 6: Mixed
+Centrality vs   AB_Open   	Result: 17 to 3
+  Match 7: Mixed
+Centrality vs AB_Improved 	Result: 18 to 2
+
+
+Results:
+----------
+Mixed
+Centrality     91.43%
+All Results:
+baseline_score 86.42857142857143
+results_prepared {'Legal Moves\nLeft Balance': [1.4285714285714164, 1.4285714285714306, -3.5714285714285694], 'Dominating\nSpace': [-7.142857142857153, 6.428571428571431, 2.142857142857139], 'Dominating\nMoves': [2.857142857142847, 0.7142857142857224, 0.0], 'Schadenfreude': [-5.714285714285722, 0.0, -9.285714285714292], 'Mixed \nCentrality': [0.7142857142857082, -1.4285714285714306, 5.0]}
+averaged_results {'Legal Moves\nLeft Balance': -0.2380952380952408, 'Dominating\nSpace': 0.47619047619047211, 'Dominating\nMoves': 1.1904761904761898, 'Schadenfreude': -5.0000000000000044, 'Mixed \nCentrality': 1.4285714285714259}
+
+real	203m6.036s
+user	200m50.125s
+sys	0m52.678s

@@ -3,7 +3,7 @@ import numpy as np
 
 def visualize_as_bar(d, title=None):
 
-    positions = np.arange(len(d))
+    positions = np.arange(len(d))*1.1
 
     no_of_dimensions = len(next(iter(d.values())))
 

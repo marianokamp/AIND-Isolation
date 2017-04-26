@@ -41,7 +41,7 @@ from game_agent import custom_score_mixed_centrality
 
 
 
-NUM_MATCHES = 20  # number of matches against each opponent # Was 5, Then 20
+NUM_MATCHES = 1  # number of matches against each opponent # Was 5, Then 20
 TIME_LIMIT = 500  # number of milliseconds before timeout # Was 150
 
 TIMEOUT_WARNING = "One or more agents lost a match this round due to " + \
@@ -187,6 +187,9 @@ def main():
 
     for run in range(0,3):
         print(DESCRIPTION)
+        print("============================")
+        print("Run:", run)
+        print("============================")
 
         results = []
         for agentUT in test_agents:
@@ -224,7 +227,7 @@ def main():
     import visualize
     import numpy as np
     print("results_prepared", results_prepared)
-    visualize.visualize_as_bar(results_prepared, "Absolute Differences to Baseline")
+    visualize.visualize_as_bar(results_prepared, "Absolute Gains to Baseline")
 
     # Create table
     averaged_results = {}

@@ -144,8 +144,8 @@ However it does not express the balance as difference, but a ratio of move of
 the player itself vs all moves left (player's moves: \(M_p\) and opponent's
 moves: \(M_o\)) and also gives more weight to the opponents moves.
 
-The results are somewhat encouraging and for the future it would be interesting
-to experiment with the weights.
+The results are somewhat encouraging - beating ID_Improved consistently - and
+for the future it would be interesting to experiment with the weights.
 
 \(r = \left(\frac{M_p}{1+M_p+3M_o}\right)\)
 
@@ -220,4 +220,4 @@ Save our breath later on to run to the end instead.
 
 # Data
 
-[Run 1](<run1.txt>)
+[Run](repeated_run.txt) <-- Link
