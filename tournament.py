@@ -41,7 +41,7 @@ from game_agent import custom_score_mixed_centrality
 
 
 
-NUM_MATCHES = 1  # number of matches against each opponent # Was 5, Then 20
+NUM_MATCHES = 30  # number of matches against each opponent # Was 5, Eventually 20
 TIME_LIMIT = 500  # number of milliseconds before timeout # Was 150
 
 TIMEOUT_WARNING = "One or more agents lost a match this round due to " + \

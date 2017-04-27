@@ -316,7 +316,7 @@ class CustomPlayer:
                         break
 
                     current_depth += 1
-                    # FIXME How about some re-ordering here?
+                    # FIXME How about some re-ordering for future extensions here?
 
             # --- One-Shot
             else:

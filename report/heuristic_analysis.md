@@ -25,10 +25,6 @@ specific scenarios and their relative differences.
 
 ## Common Characteristics
 
-### Movement Patterns
-
-FIXME: As a general rule, we do not take into account future movements in our value function. Instead the search takes care of that.
-
 #### Partitions
 
 The lectures talked about a game of Isolation that is based on the movement
@@ -129,11 +125,14 @@ machine._
 |Method              | \[ \Delta \] |
 |------              |------   |
 |Baseline            | ---     |
-|Dominating Moves    | +12.8%  |
-|Dominating Space| |
-|Schadenfreude||
-|Mixed Centrality||
-|Legal Moves Left (Canary) ||
+|Dominating Moves    | +2.4%  |
+|Dominating Space| -2.0% |
+|Schadenfreude| -5.3% |
+|Mixed Centrality| 2.5% |
+|Legal Moves Left (Canary) | -0.1%|
+
+Gains were averaged over three runs with `NUM_MATCHES=20` and `TIME_LIMIT=500`,
+everything else were left to the defaults.
 
 ### Dominating Moves
 
@@ -220,4 +219,4 @@ Save our breath later on to run to the end instead.
 
 # Data
 
-[Run](repeated_run.txt) <-- Link
+[Run](repeated_run4.txt) <-- Link
